@@ -1,0 +1,34 @@
+services:
+  php-apache:
+    build: .
+    container_name: php_apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - minha-rede
+
+  mysql:
+    image: mysql:8.4.4
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: meu_banco
+      MYSQL_USER: usuario_livros
+      MYSQL_PASSWORD: senha_livros
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - minha-rede
+
+networks:
+  minha-rede:
+
+volumes:
+  mysql_data:
